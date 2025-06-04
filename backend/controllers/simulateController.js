@@ -27,7 +27,7 @@ Return the result as a JSON object with these keys:
 `;
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini", // or "gpt-3.5-turbo" if preferred
+      model: "gpt-3.5-turbo", // or "gpt-3.5-turbo" if preferred
       messages: [
         { role: "user", content: prompt }
       ],
