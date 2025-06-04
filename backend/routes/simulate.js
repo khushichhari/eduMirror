@@ -1,14 +1,12 @@
 import express from 'express';
-import { Configuration, OpenAIApi } from 'openai';
-import Simulation from '../models/Simulation.js'; // ✅ import model
+import OpenAI from 'openai';  // new import style
+import Simulation from '../models/Simulation.js';
 
 const router = express.Router();
 
-const configuration = new Configuration({
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
-
-const openai = new OpenAIApi(configuration);
 
 router.post('/', async (req, res) => {
   const { name, careerPath } = req.body;
@@ -16,14 +14,14 @@ router.post('/', async (req, res) => {
   try {
     const prompt = `Simulate a 5-year career journey for ${name} as a ${careerPath}...`;
 
-    const completion = await openai.createChatCompletion({
+    const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [{ role: 'user', content: prompt }],
     });
 
-    const result = completion.data.choices[0].message.content;
+    const result = completion.choices[0].message.content;
 
-    // ✅ Save to DB
+    // Save to DB
     const newSimulation = new Simulation({ name, careerPath, result });
     await newSimulation.save();
 
