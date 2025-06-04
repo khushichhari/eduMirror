@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../Styles/career.css';  // your CSS file
+import '../Styles/career.css';
 
 const CareerSimulator = () => {
   const [name, setName] = useState('');
@@ -9,26 +9,28 @@ const CareerSimulator = () => {
   const [error, setError] = useState(null);
 
   const simulate = async () => {
-    if (!name.trim() || !careerPath.trim()) {
+    if (!name || !careerPath) {
       setError('Please enter both name and career path.');
       return;
     }
+
     setError(null);
     setLoading(true);
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/simulate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, careerPath }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error('Failed to simulate career.');
+        throw new Error(data.error || 'Simulation failed');
       }
 
-      const data = await response.json();
-      setResult(data.result);
+      setResult(data);
     } catch (err) {
       setError(err.message);
       setResult(null);
@@ -47,7 +49,7 @@ const CareerSimulator = () => {
         disabled={loading}
       />
       <input
-        placeholder="Career path (e.g., Data Scientist)"
+        placeholder="Career path (e.g., Full Stack Developer)"
         value={careerPath}
         onChange={(e) => setCareerPath(e.target.value)}
         disabled={loading}
@@ -55,19 +57,9 @@ const CareerSimulator = () => {
       <button onClick={simulate} disabled={loading}>
         {loading ? 'Simulating...' : 'Simulate Career'}
       </button>
-      {error && <p style={{ color: 'red', marginTop: '1rem' }}>{error}</p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
       {result && (
-        <pre
-          style={{
-            textAlign: 'left',
-            background: '#eee',
-            padding: '1em',
-            marginTop: '1em',
-            borderRadius: '8px',
-            maxHeight: '400px',
-            overflowY: 'auto',
-          }}
-        >
+        <pre style={{ textAlign: 'left', background: '#f4f4f4', padding: '1em', marginTop: '1em', borderRadius: '8px' }}>
           {JSON.stringify(result, null, 2)}
         </pre>
       )}
