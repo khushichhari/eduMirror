@@ -1,0 +1,85 @@
+/* .App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+} */
+
+
+
+
+/* General body and page styling */
+body {
+  margin: 0;
+  padding: 0;
+  background: #f0f4ff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #1e293b;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+/* App container */
+#root > div {
+  width: 100%;
+  max-width: 480px;
+  background: white;
+  border-radius: 16px;
+  padding: 2rem 2.5rem 3rem;
+  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.15);
+  box-sizing: border-box;
+}
+
+/* Logo / heading */
+.logoname {
+  font-size: 1.8rem;
+  color: #2563eb;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  user-select: none
+}
+
+/* Responsive heading */
+@media (max-width: 480px) {
+  .logoname {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+}
