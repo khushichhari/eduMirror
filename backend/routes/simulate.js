@@ -1,30 +1,16 @@
-// import express from 'express';
-// import { simulateCareer } from '../controllers/simulateController.js';
-
-// const router = express.Router();
-
-// router.post('/', simulateCareer);
-
-// export default router;
-
-
-// new
-
-
 import express from 'express';
-import { Configuration, OpenAIApi } from 'openai';
-import Simulation from '../models/Simulation.js';
 import dotenv from 'dotenv';
+import OpenAI from 'openai'; // ✅ fixed import
+import Simulation from '../models/Simulation.js';
 
 dotenv.config();
 
 const router = express.Router();
 
-// OpenAI setup
-const configuration = new Configuration({
+// ✅ New OpenAI SDK initialization for v5+
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
-const openai = new OpenAIApi(configuration);
 
 router.post('/', async (req, res) => {
   const { name, careerPath } = req.body;
@@ -46,16 +32,15 @@ For each year, include:
 Return this as readable text.
 `;
 
-    const completion = await openai.createChatCompletion({
+    const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [{ role: 'user', content: prompt }],
     });
 
-    const result = completion.data.choices?.[0]?.message?.content || 'No response from OpenAI';
+    const result = completion.choices?.[0]?.message?.content || 'No response from OpenAI';
 
     console.log('✅ OpenAI response:', result);
 
-    // Save simulation result
     const newSimulation = new Simulation({ name, careerPath, result });
     await newSimulation.save();
 
